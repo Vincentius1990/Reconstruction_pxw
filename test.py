@@ -1,3 +1,17 @@
+# encoding: utf-8
+#    Authors: Xingwen Peng
+#    National University of Defense Technology, China
+#    Defense Innovation Institute, Chinese Academy of Military Science, China
+#    EMAIL: vincent1990@126.com
+#    DATE:  Jun 2022
+# ------------------------------------------------------------------------
+# This code is part of the program that produces the results in the following paper:
+#
+# Peng, X., Li, X., Gong, Z., Zhao, X., Yao, W., 2022. A Deep Learning Method Based on Partition Modeling For reconstructing Temperature Field. SSRN Journal. https://doi.org/10.2139/ssrn.4065493
+#
+# You are free to use it for non-commercial purposes. However, we do not offer any forms of guanrantee or warranty associated with the code. We would appreciate your acknowledgement.
+# ------------------------------------------------------------------------
+
 import time
 import torch
 from torch.utils.data import DataLoader
@@ -113,142 +127,6 @@ if __name__ == '__main__':
     # test('vp_10_c1_0.1grad_4ob_UNetV2', 'vp_10_c1_0.1grad_4ob_UNetV2_200epoch', None, 'test.txt')
     # test('vp_10_c1_0.1grad_4ob_UNetV2', 'vp_10_c1_0.1grad_4ob_UNetV2_200epoch', 'vp_10_c1_4ob_MLP_100epoch', 'test.txt')
 
-    '''第一大类,special数据集测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/ind/ind_4.pt')
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c1_sp'
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/sp_1024.txt' 
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 1 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                               
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16         
-    # test('vp_10_c1_0.1grad_4ob_UNetV2_200epoch', None, 'sp_1024.txt')
-    # test('vp_10_c1_0.1grad_4ob_UNetV2_200epoch', 'vp_10_c1_4ob_MLP_100epoch', 'sp_1024.txt')  
-    # test('vp_10_c1_0.1grad_4ob_UNetV2', 'vp_10_c1_0.1grad_4ob_UNetV2_200epoch', 'vp_10_c1_4ob_MLP_100epoch', 'sp_1024.txt')
-
-    # test('vp_10_c1_4ob_UNetV2_200epoch', None, 'sp_1024.txt')
-    # test('vp_10_c1_4ob_UNetV2_200epoch', 'vp_10_c1_4ob_MLP_100epoch', 'sp_1024.txt')
-
-    '''第二大类,数据集规模测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_4.pt')
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c1_60k'
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/test_list_5k.txt'   
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 16 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                               
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16  
-    # test('vp_10_c1_ts_40k_4ob_UNetV2_200epoch', None, 'test_list_5k.txt')
-    # test('vp_10_c1_ts_40k_4ob_UNetV2_200epoch', 'vp_10_c1_4ob_MLP_100epoch', 'test_list_5k.txt')
-
-    '''第三大类,观测点数量测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_1.pt')   # 观测点遮罩
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c1_60k'                              # 原始数据
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/test.txt'                          # 测试集
-
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 16 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                                
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 1                                                                     # MLP输入
-
-    # test('vp_10_c1_1ob_UNetV2_200epoch', None, 'test.txt')
-    # test('vp_10_c1_1ob_UNetV2_200epoch', 'vp_10_c1_1ob_MLP_100epoch', 'test.txt')
-    
-    '''第四大类,不同测点采样策略测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_c1_16.pt')   # 观测点遮罩
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16    
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c1_60k'                              # 原始数据
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/test.txt'                          # 测试集
-
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 16 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()  
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16                                
-
-    # test('vp_10_c1_16ob_UNetV2_200epoch_2', None, 'test.txt')
-    # test('vp_10_c1_16ob_UNetV2_200epoch_2', 'vp_10_c1_16ob_MLP_100epoch', 'test.txt')
 
 
-    # '''--------------------Case 3---------------------'''
-    cnd = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/ind/cnd_c3.pt')
-    cnd = cnd.to(device)   
- 
-    '''第一大类,general数据集测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/ind/ind_4.pt')
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c3_55k'
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/test.txt'      # test_list_5k.txt 
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 1
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                               
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16                               
 
-    # test('vp_c3_4ob_1.0grad_UNetV2', 'vp_c3_4ob_1.0grad_UNetV2_200epoch', None, 'test.txt')
-    # test('vp_c3_4ob_1.0grad_UNetV2', 'vp_c3_4ob_1.0grad_UNetV2_200epoch', 'vp_c3_4ob_MLP_100epoch', 'test.txt')
-    # test('vp_c3_4ob_UNetV2', 'vp_c3_4ob_UNetV2_200epoch_4', None, 'test.txt')
-    # test('vp_c3_4ob_UNetV2', 'vp_c3_4ob_UNetV2_200epoch_4', 'vp_c3_4ob_MLP_100epoch', 'test.txt')
-
-    '''第一大类,special数据集测试'''
-    ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/ind/ind_4.pt')
-    root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c3_sp'
-    test_path = '/mnt/share1/pengxingwen/Dataset/vp/sp_1024.txt' 
-    test_dataset = MyNewData(root, test_path, ind, None)
-    batch_size = 1 
-    test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    l_test = test_dataset.__len__()                               
-    ind = ind.reshape(1, 200, 200)
-    num_input = 16  
-    # test('vp_c3_4ob_UNetV2_200epoch_4', None, 'sp_1024.txt')
-    test('vp_c3_4ob_UNetV2', 'vp_c3_4ob_UNetV2_200epoch_4', 'vp_c3_4ob_MLP_100epoch', 'test.txt')
-
-    '''第二大类,数据集规模测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_4.pt')
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c3_55k'
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/c3_test_list_5k.txt'   
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 16 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                               
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16  
-    # test('vp_c3_ts_40k_4ob_UNetV2_200epoch', None, 'c3_test_list_5k.txt')
-    # test('vp_c3_ts_40k_4ob_UNetV2_200epoch', 'vp_c3_4ob_MLP_100epoch', 'c3_test_list_5k.txt')
-
-    '''第三大类,观测点数量测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_1.pt')   # 观测点遮罩
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c3_55k'                              # 原始数据
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/test.txt'                          # 测试集
-
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 16 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                                
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 1                                                                     # MLP输入
-
-    # test('vp_c3_1ob_UNetV2_200epoch', None, 'test.txt')
-    # test('vp_c3_1ob_UNetV2_200epoch', 'vp_c3_1ob_MLP_100epoch', 'test.txt')
-
-    '''第四大类,不同测点采样策略测试'''
-    # ind = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_c3_16.pt')   # 观测点遮罩
-    # ind = ind.reshape(1, 200, 200)
-    # num_input = 16    
-    # root = '/mnt/share1/pengxingwen/Dataset/vp/vp_c3_55k'                              # 原始数据
-    # test_path = '/mnt/share1/pengxingwen/Dataset/vp/test.txt'                          # 测试集
-
-    # test_dataset = MyNewData(root, test_path, ind, None)
-    # batch_size = 16 
-    # test_iter  = DataLoader(test_dataset, batch_size = batch_size, shuffle= False, num_workers=16)
-    # l_test = test_dataset.__len__()                                
-                                                                
-
-    # test('vp_c3_16ob_UNetV2_200epoch', None, 'test.txt')
-    # test('vp_c3_16ob_UNetV2_200epoch', 'vp_c3_16ob_MLP_100epoch', 'test.txt')
