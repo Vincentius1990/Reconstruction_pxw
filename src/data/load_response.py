@@ -6,20 +6,7 @@ from torch.utils.data import DataLoader
 from torch.utils.data import TensorDataset
 
 
-def data_cat(Fc, u):
-    prob = np.zeros((200, 200))
-    for i in range(19):
-        for j in range(19):
-            prob[9 + i * 10][9 + j * 10] = u[9 + i * 10][9 + j * 10]
-    prob = np.expand_dims(prob, 0) 
-    Fc0 = Fc
-    Fc =  np.where(Fc > 0, 200000, Fc)
-    Fc = np.expand_dims(Fc, 0)
-    Fc0 = np.expand_dims(Fc0, 0)
-    u = np.expand_dims(u, 0)
-    ft = np.concatenate((Fc, prob), axis = 0)
-    ut = np.concatenate((Fc0, u), axis = 0)
-    return ft, ut
+
 
 
 class MyDataset(Dataset):
