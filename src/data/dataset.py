@@ -1,3 +1,17 @@
+# encoding: utf-8
+#    Authors: Xingwen Peng
+#    National University of Defense Technology, China
+#    Defense Innovation Institute, Chinese Academy of Military Science, China
+#    EMAIL: vincent1990@126.com
+#    DATE:  Jun 2022
+# ------------------------------------------------------------------------
+# This code is part of the program that produces the results in the following paper:
+#
+# Peng, X., Li, X., Gong, Z., Zhao, X., Yao, W., 2022. A Deep Learning Method Based on Partition Modeling For reconstructing Temperature Field. SSRN Journal. https://doi.org/10.2139/ssrn.4065493
+#
+# You are free to use it for non-commercial purposes. However, we do not offer any forms of guanrantee or warranty associated with the code. We would appreciate your acknowledgement.
+# ------------------------------------------------------------------------
+
 import os
 import random
 import torch
@@ -25,104 +39,27 @@ def make_dataset(root_dir, list_path):
     return files
 
 
-class SVFRData(Dataset):                                              # 继承Dataset
-    '''
-    传感器位置可变，双通道输入
-    '''
-
-    def __init__(self, root, list_path, ind, transform):               # __init__是初始化该类的一些基础参数
+class MyNewData(Dataset):                                           
+    def __init__(self, root, list_path, ind, transform):               
         super().__init__()
-        self.root = root                                               # 文件目录
-        self.list_path = list_path                                     # 文件list
-        self.ind = ind                                                 # 测点提取遮罩
+        self.root = root                                               
+        self.list_path = list_path                                     
+        self.ind = ind                                                
         self.sample_files = make_dataset(root, list_path)
         self.transform = transform
 
-    def __getitem__(self, index):                                      # 根据索引index返回dataset[index]
+    def __getitem__(self, index):                                      
         path = self.sample_files[index]
         monitor_y, ut = self._loader(path, self.ind)
         if self.transform is not None:
             monitor_y, ut = self.transform(monitor_y), self.transform(ut)
             ind = self.transform(self.ind)
-        return monitor_y.float(), ut.float()                            # 返回测点和温度场
+        return monitor_y.float(), ut.float()                           
 
-    def __len__(self):                                                  # 返回整个数据集的大小
+    def __len__(self):                                                  
         return len(self.sample_files)
 
-    def _loader(self, path, ind):                                       # 提取测点
-        ut = loadmat(path)['u']
-        monitor_y = ut * ind
-        obs = monitor_y[monitor_y>0].reshape(4,4)
-        mask = np.zeros((200, 200))
-        for i in range(4):
-            for j in range(4):
-                mask[50 * i: 50 * i + 50, 50 * j : 50 * j + 50] = obs[i,j]
-        mask = np.expand_dims(mask, axis=0)
-        ob_mask = np.concatenate((mask, ind), axis = 0)
-        ut = np.expand_dims(ut, axis=0)       
-        return torch.tensor(ob_mask), torch.tensor(ut)
-        # return torch.tensor((monitor_y - 298) / 50), torch.tensor((ut - 298) / 50)    # 归一化
-
-
-class HeatsinkData(Dataset):                                              # 继承Dataset
-    '''
-    新的封装类，用列表读取样本
-    '''
-
-    def __init__(self, root, list_path, ind, transform):               # __init__是初始化该类的一些基础参数
-        super().__init__()
-        self.root = root                                               # 文件目录
-        self.list_path = list_path                                     # 文件list
-        self.ind = ind                                                 # 测点提取遮罩
-        self.sample_files = make_dataset(root, list_path)
-        self.transform = transform
-
-    def __getitem__(self, index):                                      # 根据索引index返回dataset[index]
-        path = self.sample_files[index]
-        monitor_y, ut = self._loader(path, self.ind)
-        if self.transform is not None:
-            monitor_y, ut = self.transform(monitor_y), self.transform(ut)
-            ind = self.transform(self.ind)
-        return monitor_y.float(), ut.float()                            # 返回测点和温度场
-
-    def __len__(self):                                                  # 返回整个数据集的大小
-        return len(self.sample_files)
-
-    def _loader(self, path, ind):                                       # 提取测点
-        ut = loadmat(path)['u']
-        monitor_y = ut * ind
-        monitor_y = (monitor_y[monitor_y != 0] - 298) / 50              # 提取温度测点数据
-        u_area = loadmat(path)['u'][0:2, 86:112]                        # 提取热沉区域26*2温度数据
-        u_area = (u_area.reshape(52) - 298) / 50
-        # ut = np.expand_dims(ut, axis=0)
-        return torch.tensor(monitor_y), torch.tensor(u_area)
-
-
-class MyNewData(Dataset):                                              #继承Dataset
-    '''
-    新的封装类，用列表读取样本
-    '''
-
-    def __init__(self, root, list_path, ind, transform):               # __init__是初始化该类的一些基础参数
-        super().__init__()
-        self.root = root                                               # 文件目录
-        self.list_path = list_path                                     # 文件list
-        self.ind = ind                                                 # 测点提取遮罩
-        self.sample_files = make_dataset(root, list_path)
-        self.transform = transform
-
-    def __getitem__(self, index):                                      # 根据索引index返回dataset[index]
-        path = self.sample_files[index]
-        monitor_y, ut = self._loader(path, self.ind)
-        if self.transform is not None:
-            monitor_y, ut = self.transform(monitor_y), self.transform(ut)
-            ind = self.transform(self.ind)
-        return monitor_y.float(), ut.float()                            # 返回测点和温度场
-
-    def __len__(self):                                                  # 返回整个数据集的大小
-        return len(self.sample_files)
-
-    def _loader(self, path, ind):                                       # 提取测点
+    def _loader(self, path, ind):                                     
         ut = loadmat(path)['u']
         monitor_y = ut * ind
         ut = np.expand_dims(ut, axis=0)
@@ -135,7 +72,7 @@ if __name__ == '__main__':
     train_path = '/mnt/share1/pengxingwen/Dataset/vp/train.txt'
     test_path = '/mnt/share1/pengxingwen/Dataset/vp/test.txt'
 
-    batch_size = 1                                    # 封装的批量大小，一般取16、32、64、128或者256
+    batch_size = 64                                    
     ind_4 = torch.load('/mnt/share1/pengxingwen/reconstruction_pxw/src/data/ind_4.pt')
     # train_dataset = HeatsinkData(root, train_path, ind_4, None)
     # train_iter = DataLoader(train_dataset, batch_size = batch_size, shuffle= True, num_workers=4)
